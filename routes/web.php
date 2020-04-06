@@ -2,13 +2,34 @@
 
 use Illuminate\Support\Facades\Route;
 
-//Rota com parâmetros e Controller 
-Route::get('/products/{id}','ProductController@show')->name('products.show');
+//Comandos de Artisan para controller
+//php artisan make:controller ProductController --resource -> cria Controller com 
 
-//Rota com Controller
-Route::get('/products','ProductController@index')->name('products.index');
+// Controllers Resources 
+//Gera todo o código do Controller CRUD comentado abaixo
+Route::resource('products','ProductController');
 
-//################### APRENDIZADO #######################
+//Controlers de CRUD
+// Route::delete('/products/{id}','ProductController@destroy')->name('products.destroy');
+// Route::put('/products/{id}','ProductController@update')->name('products.update');
+// Route::get('/products/{id}/edit','ProductController@edit')->name('products.edit');
+// Route::get('/products/create','ProductController@create')->name('products.create');
+// Route::get('/products/{id}','ProductController@show')->name('products.show');
+// Route::get('/products','ProductController@index')->name('products.index');
+// Route::post('/products','ProductController@store')->name('products.store');
+
+//################## DICIONARIO BOAS PRÁTICAS #######################
+/*
+lsitar, list, exibir = index
+exibir algo específico de uma lista = show
+add, adicionar, registrar = create
+update = update
+deletar, apagar = destroy
+
+*/
+
+
+//################### APRENDIZADO SOBRE ROTAS #######################
 //Comandos de Artisan para rotas
 //php artisan route:list -> Lista todas as rotas criadas
 //php artisan route:cache -> Limpa as rotas que estão em cache
