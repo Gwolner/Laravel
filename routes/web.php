@@ -2,12 +2,16 @@
 
 use Illuminate\Support\Facades\Route;
 
+
+//Usando Middleware (Filtros)
+// Route::resource('products','ProductControllerMix')->middleware('auth');
+
 //Comandos de Artisan para controller
 //php artisan make:controller ProductController --resource -> cria Controller com 
 
 // Controllers Resources 
 //Gera todo o código do Controller CRUD comentado abaixo
-Route::resource('products','ProductController');
+Route::resource('products','ProductControllerMix');
 
 //Controlers de CRUD
 // Route::delete('/products/{id}','ProductController@destroy')->name('products.destroy');
