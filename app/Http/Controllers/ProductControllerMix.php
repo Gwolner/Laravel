@@ -20,7 +20,7 @@ class ProductControllerMix extends Controller
         // ]);
         
         //Aplica em todos, exceto os mencionados
-        $this->middleware('auth')->except('index');
+        // $this->middleware('auth')->except('index');
     }
 
     /**
@@ -31,13 +31,16 @@ class ProductControllerMix extends Controller
     public function index()
     {
         $teste = '<h1>TEMIAS</h1>';
+        $teste2 = 123;
+        $produtos = ['Sofá', 'TV', 'Geladeira', 'Cama'];
+        $produtos2 = [];
         // return view('teste',[
         //     'teste' =>  $teste
         // ]);
         
         //Usando função PHP Compact: criar um array a partir do nome das variáveis
         //Compact recebe a referencia da variável (varia´vel sem o $)
-        return view('admin.pages.index',compact('teste'));
+        return view('admin.pages.index',compact('teste', 'teste2', 'produtos', 'produtos2'));
     }
 
     /**
@@ -47,7 +50,7 @@ class ProductControllerMix extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.pages.create');
     }
 
     /**
@@ -58,7 +61,7 @@ class ProductControllerMix extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd('Cadastrando......');
     }
 
     /**
@@ -80,7 +83,7 @@ class ProductControllerMix extends Controller
      */
     public function edit($id)
     {
-        //
+        return view('admin.pages.edit',compact('id'));
     }
 
     /**
@@ -92,7 +95,7 @@ class ProductControllerMix extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // dd();
     }
 
     /**
