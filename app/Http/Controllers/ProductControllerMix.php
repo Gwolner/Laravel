@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorageUpdateProductsRequest;
 use Illuminate\Http\Request;
 
 class ProductControllerMix extends Controller
@@ -56,12 +57,45 @@ class ProductControllerMix extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\StorageUpdateProductsRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        dd('Cadastrando......');
+    public function store(StorageUpdateProductsRequest $request)
+    {   
+        //Validações no Controller (Não é o indicado)
+        // $request->validate([
+        //     'name' => 'required|min:3|max:255',
+        //     'description' => 'required|min:3|max:10000',
+        //     'photo' => 'image|nullable',
+        // ]); 
+        //Se existir erro, ele volta para a página de origem com as mensagens de erro
+
+        // dd('Cadastrando......');
+        // dd($request->all()); //Exibe todos os dados pegos na requisição
+        // dd($request->only(['name','description'])); //Exibe dados específicos da requisição
+        // dd($request->name); //Pega um dado específico
+        // dd($request->has('name')); //Retorna true se um dado existe, retorna false se não.
+        // dd($request->input('name2','default')); //Retorna o valor 'default' se o campo o param 1 não existe
+        // dd($request->except('_token')); //Exibe todos os campos, exceto o informado.
+
+        //Manipulação de arquivos:
+        // dd($request->file('photo')); //Exibe todos os dados do arquivo
+        // dd($request->file('photo')->isValid()); //Verifica se é um arquivo válido (true ou false)
+
+        if($request->file('photo')->isValid()){
+            // dd($request->photo->extension()); // == $request->file('photo'); Exibe a extensão do file!
+            // dd($request->photo->getClientOriginalName()); //Exibe p nome original do arquivo
+
+            // Armazena arquivo no diretório informado. Se el não existir, ele será criado
+            // Para armazenar os arquivos no diretório raíz (storage) use o parametro '' (vazio).
+            // dd($request->file('photo')->store('products')); 
+            
+            //Armazena o arquivo com nome personalizado
+            $nameFile = $request->name . '.' . $request->photo->extension();
+            dd($request->file('photo')->storeAs('products', $nameFile));         
+
+        }
+
     }
 
     /**
@@ -95,7 +129,7 @@ class ProductControllerMix extends Controller
      */
     public function update(Request $request, $id)
     {
-        // dd();
+        dd("Editando o produto {{$id}}");
     }
 
     /**

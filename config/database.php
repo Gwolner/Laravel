@@ -17,6 +17,17 @@ return [
 
     'default' => env('DB_CONNECTION', 'mysql'),
 
+    // Rodar o comando php artisan migrate para gerar os migrations.
+    // Caso se altere o nome de algum arquivo de migration emdatabase/migratons,
+    // deve-se usar o comando composer dump-autoload para que o compose se 
+    // atualize do nome novo!
+
+    php artisan => exibe todos os comandos disponíveis.
+
+
+
+
+
     /*
     |--------------------------------------------------------------------------
     | Database Connections

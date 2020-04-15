@@ -13,7 +13,17 @@ return [
     |
     */
 
-    'default' => env('FILESYSTEM_DRIVER', 'local'),
+    'default' => env('FILESYSTEM_DRIVER', 'public'),
+    // Criando Link público
+
+    // Alterar, acima, local para public. Rodar ls -la public/ no terminal e 
+    // checar que não há link publico disponível. Para cria-lo, usar o comando
+    // php artisan storage:link. Pode-se usar novamente o  ls -la public/ para
+    // checar o link criado.
+    
+    // Exemplo de caminho publico criado: 
+    // http://app-laravel.com/storage/products/jailson.jpeg
+
 
     /*
     |--------------------------------------------------------------------------

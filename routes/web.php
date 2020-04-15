@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+//Comando de Artisan para View
+//php artisan view:clear
 
 //Usando Middleware (Filtros)
 // Route::resource('products','ProductControllerMix')->middleware('auth');
