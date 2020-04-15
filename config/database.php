@@ -22,7 +22,7 @@ return [
     // deve-se usar o comando composer dump-autoload para que o compose se 
     // atualize do nome novo!
 
-    php artisan => exibe todos os comandos disponíveis.
+    // php artisan => exibe todos os comandos disponíveis.
 
 
 
