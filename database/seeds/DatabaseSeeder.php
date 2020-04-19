@@ -11,6 +11,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(UsersTableSeeder::class);
+        $this->call(UserTableSeeder::class);
+
+        // Criar seeders via comando php artisan make:seeder UserTableSeeder //Sempre neste padrão!
+        // Se criar manualmente, deve-se  usar o commando que dá reload no compoder (veja em migrations)
     }
 }

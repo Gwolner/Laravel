@@ -8,37 +8,67 @@
 @section('content')
 <h1>EXIBINDO OS PRODUTOS</h1>
 
-@component('admin.components.card')
-    @slot('title')
-        Titulo Card
-    @endslot
-    Pó é um filadaputa
-@endcomponent
+<a href="{{ route('products.create') }}">Cadastrar</a>
 
-<hr>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Preço</th>
+            <th>Ação</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach($products as $item)
+            <tr>
+                <td>{{ $item->name }}</td>
+                <td>{{ $item->price }}</td>
+                <td>
+                    <a href="{{ route('products.show', $item->id) }}">Detalhes</a>
+                </td>
+            </tr>
+        @endforeach
+    </tbody>
+</table>
 
-@include('admin.includes.alerts',['conteudoDoAlert' => 'Meu alert'])
-
-<hr>
+{!! $products->links() !!}
 
 
-{{ $teste }}
-
-@foreach($produtos as $produto)
-    <p class="@if($loop->last) last @endif">{{ $produto }}</p>
-    <!-- Tambem pode-se usar ($loop->first) -->
-@endforeach
 
 
-<hr>
 
-@forelse($produtos2 as $produto)
-    <p>{{ $produto }}</p>
-@empty
-    Não tem nada no array
-@endforelse
+{{-- 
+    @component('admin.components.card')
+        @slot('title')
+            Titulo Card
+        @endslot
+            Corpo do card
+    @endcomponent
+   
+    <hr>
 
-<hr>
+    @include('admin.includes.alerts',['conteudoDoAlert' => 'Meu alert'])
+
+    <hr>
+
+
+    {{ $teste }}
+
+    @foreach($produtos as $produto)
+        <p class="@if($loop->last) last @endif">{{ $produto }}</p>
+        <!-- Tambem pode-se usar ($loop->first) -->
+    @endforeach
+
+
+    <hr>
+
+    @forelse($produtos2 as $produto)
+        <p>{{ $produto }}</p>
+    @empty
+        Não tem nada no array
+    @endforelse
+
+    <hr>
 
     <!-- IF comumente conhecido -->
     @if($teste2 === '123')
@@ -91,9 +121,10 @@
         @default
             <!-- ação default -->
     @endswitch
-
+    --}}
 @endsection
 
+{{-- 
 @push('styles')
     <style>
         .last{background: #CCC}
@@ -105,3 +136,4 @@
         document.body.style.background = '#987';
     </script>
 @endpush
+--}}
