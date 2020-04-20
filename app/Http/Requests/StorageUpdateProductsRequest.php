@@ -26,7 +26,17 @@ class StorageUpdateProductsRequest extends FormRequest
         return [
             'name' => 'required|min:3|max:255',
             'description' => 'required|min:3|max:10000',
+            'price' => 'required',
             'photo' => 'image|nullable',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'name.required' => 'Nome é obrigatório!',
+            'name.min' => 'O nome precisa ter ao menos 3 letras',
+            'price' => 'O preço é obrigatório',
         ];
     }
 }

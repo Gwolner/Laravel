@@ -71,6 +71,18 @@ class ProductControllerMix extends Controller
      */
     public function store(StorageUpdateProductsRequest $request)
     {   
+        //Pegando todos os dados:
+        // $data = $request->all();
+
+        //Pegando dados específicos:
+        $data = $request->only('name','description','price','photo');
+
+        //Cria/persiste os dados e retorna um objeto que pode ou não ser usado!
+        $product = Product::create($data);
+
+        return redirect()->route('products.index');
+
+
         //Validações no Controller (Não é o indicado)
         // $request->validate([
         //     'name' => 'required|min:3|max:255',
@@ -91,19 +103,19 @@ class ProductControllerMix extends Controller
         // dd($request->file('photo')); //Exibe todos os dados do arquivo
         // dd($request->file('photo')->isValid()); //Verifica se é um arquivo válido (true ou false)
 
-        if($request->file('photo')->isValid()){
-            // dd($request->photo->extension()); // == $request->file('photo'); Exibe a extensão do file!
-            // dd($request->photo->getClientOriginalName()); //Exibe p nome original do arquivo
+        // if($request->file('photo')->isValid()){
+        //     // dd($request->photo->extension()); // == $request->file('photo'); Exibe a extensão do file!
+        //     // dd($request->photo->getClientOriginalName()); //Exibe p nome original do arquivo
 
-            // Armazena arquivo no diretório informado. Se el não existir, ele será criado
-            // Para armazenar os arquivos no diretório raíz (storage) use o parametro '' (vazio).
-            // dd($request->file('photo')->store('products')); 
+        //     // Armazena arquivo no diretório informado. Se el não existir, ele será criado
+        //     // Para armazenar os arquivos no diretório raíz (storage) use o parametro '' (vazio).
+        //     // dd($request->file('photo')->store('products')); 
             
-            //Armazena o arquivo com nome personalizado
-            $nameFile = $request->name . '.' . $request->photo->extension();
-            dd($request->file('photo')->storeAs('products', $nameFile));         
+        //     //Armazena o arquivo com nome personalizado
+        //     $nameFile = $request->name . '.' . $request->photo->extension();
+        //     dd($request->file('photo')->storeAs('products', $nameFile));         
 
-        }
+        // }
 
     }
 
@@ -137,7 +149,10 @@ class ProductControllerMix extends Controller
      */
     public function edit($id)
     {
-        return view('admin.pages.edit',compact('id'));
+        if(!$product = Product::find($id)) 
+            return redirect()->back();
+
+        return view('admin.pages.edit',compact('product'));
     }
 
     /**
@@ -149,7 +164,14 @@ class ProductControllerMix extends Controller
      */
     public function update(Request $request, $id)
     {
-        dd("Editando o produto {{$id}}");
+        if(!$product = Product::find($id)) 
+            return redirect()->back();
+
+        $product->update($request->all());
+
+        return redirect()->route('products.index');
+
+        // dd("Editando o produto {{$id}}");
     }
 
     /**
@@ -159,7 +181,14 @@ class ProductControllerMix extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-    {
-        //
+    {   
+        if(!$product = Product::find($id)) 
+            return redirect()->back();
+        
+        $product->delete();
+
+        return redirect()->route('products.index');
+
+        // dd("Deletando o produto: $id");
     }
 }

@@ -15,7 +15,7 @@
         <tr>
             <th>Nome</th>
             <th>Preço</th>
-            <th>Ação</th>
+            <th width="100">Ação</th>
         </tr>
     </thead>
     <tbody>
@@ -24,6 +24,7 @@
                 <td>{{ $item->name }}</td>
                 <td>{{ $item->price }}</td>
                 <td>
+                    <a href="{{ route('products.edit', $item->id) }}">Editar</a>
                     <a href="{{ route('products.show', $item->id) }}">Detalhes</a>
                 </td>
             </tr>
