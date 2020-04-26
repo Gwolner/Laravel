@@ -9,18 +9,20 @@ use Illuminate\Http\Request;
 class ProductControllerMix extends Controller
 {
     protected $request;
+    private $repository;
 
-    public function __construct(Request $request)
+    public function __construct(Request $request, Product $produto )
     {
         //dd($request);
         $this->request = $request;
+        $this->repository = $produto;
         // $this->middleware('auth');
 
         //Aplica so n oque for mencionado
         // $this->middleware('auth')->only([
         //     'create','store'
         // ]);
-        
+
         //Aplica em todos, exceto os mencionados
         // $this->middleware('auth')->except('index');
     }
@@ -39,7 +41,7 @@ class ProductControllerMix extends Controller
         // return view('teste',[
         //     'teste' =>  $teste
         // ]);
-        
+
         //Usando função PHP Compact: criar um array a partir do nome das variáveis
         //Compact recebe a referencia da variável (varia´vel sem o $)
         // return view('admin.pages.index',compact('teste', 'teste2', 'produtos', 'produtos2'));
@@ -70,7 +72,7 @@ class ProductControllerMix extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(StorageUpdateProductsRequest $request)
-    {   
+    {
         //Pegando todos os dados:
         // $data = $request->all();
 
@@ -78,7 +80,9 @@ class ProductControllerMix extends Controller
         $data = $request->only('name','description','price','photo');
 
         //Cria/persiste os dados e retorna um objeto que pode ou não ser usado!
-        $product = Product::create($data);
+        // $product = Product::create($data);
+
+        $this->repository->create($data);
 
         return redirect()->route('products.index');
 
@@ -88,7 +92,7 @@ class ProductControllerMix extends Controller
         //     'name' => 'required|min:3|max:255',
         //     'description' => 'required|min:3|max:10000',
         //     'photo' => 'image|nullable',
-        // ]); 
+        // ]);
         //Se existir erro, ele volta para a página de origem com as mensagens de erro
 
         // dd('Cadastrando......');
@@ -109,11 +113,11 @@ class ProductControllerMix extends Controller
 
         //     // Armazena arquivo no diretório informado. Se el não existir, ele será criado
         //     // Para armazenar os arquivos no diretório raíz (storage) use o parametro '' (vazio).
-        //     // dd($request->file('photo')->store('products')); 
-            
+        //     // dd($request->file('photo')->store('products'));
+
         //     //Armazena o arquivo com nome personalizado
         //     $nameFile = $request->name . '.' . $request->photo->extension();
-        //     dd($request->file('photo')->storeAs('products', $nameFile));         
+        //     dd($request->file('photo')->storeAs('products', $nameFile));
 
         // }
 
@@ -131,9 +135,10 @@ class ProductControllerMix extends Controller
 
         //Recuperando item:
         // $product = Product::where('id', $id)->first();  //Ou da forma abaixo
-        $product = Product::find($id);
+        // $product = Product::find($id);
+        $product = $this->repository->find($id);
 
-        if(!$product) //Ou if(!$product = Product::find($id)) 
+        if(!$product) //Ou if(!$product = Product::find($id))
             return redirect()->back();
 
         return view('admin.pages.show',[
@@ -149,7 +154,7 @@ class ProductControllerMix extends Controller
      */
     public function edit($id)
     {
-        if(!$product = Product::find($id)) 
+        if(!$product = Product::find($id))
             return redirect()->back();
 
         return view('admin.pages.edit',compact('product'));
@@ -158,13 +163,14 @@ class ProductControllerMix extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\StorageUpdateProductsRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StorageUpdateProductsRequest $request, $id)
     {
-        if(!$product = Product::find($id)) 
+        // if(!$product = Product::find($id))
+        if(!$product = $this->repository->find($id))
             return redirect()->back();
 
         $product->update($request->all());
@@ -181,14 +187,31 @@ class ProductControllerMix extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-    {   
-        if(!$product = Product::find($id)) 
+    {
+        // if(!$product = Product::find($id))
+        if(!$product = $this->repository->find($id))        
             return redirect()->back();
-        
+
         $product->delete();
 
         return redirect()->route('products.index');
 
         // dd("Deletando o produto: $id");
     }
+
+    public function search(Request $request){
+        
+        // $filters = $request->all();
+        $filters = $request->except('_token');
+
+        $products = $this->repository->search($request->filter);
+
+        return view('admin.pages.index',[
+            'products' => $products,
+            'filters' => $filters,
+        ]);
+        // dd($request->all());
+    }
+
+
 }

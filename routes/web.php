@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProductControllerMix;
 use Illuminate\Support\Facades\Route;
 //Comando de Artisan para View
 //php artisan view:clear
@@ -12,7 +13,9 @@ use Illuminate\Support\Facades\Route;
 
 // Controllers Resources 
 //Gera todo o código do Controller CRUD comentado abaixo
+Route::any('products/search','ProductControllerMix@search')->name('products.search');
 Route::resource('products','ProductControllerMix');
+
 
 //Controlers de CRUD
 // Route::delete('/products/{id}','ProductController@destroy')->name('products.destroy');
