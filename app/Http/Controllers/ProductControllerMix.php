@@ -185,8 +185,8 @@ class ProductControllerMix extends Controller
 
         if($request->hasFile('image') && $request->image->isValid()){
 
-            if($product->image){
-                dd(Storage::exists($product->image));
+            if($product->image && Storage::exists($product->image) ){
+                Storage::delete($product->image);
             }
 
             $imagePath = $request->image->store('products');
@@ -212,6 +212,10 @@ class ProductControllerMix extends Controller
         // if(!$product = Product::find($id))
         if(!$product = $this->repository->find($id))        
             return redirect()->back();
+
+        if($product->image && Storage::exists($product->image) ){
+            Storage::delete($product->image);
+        }
 
         $product->delete();
 
