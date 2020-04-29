@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StorageUpdateProductsRequest;
 use App\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductControllerMix extends Controller
 {
@@ -77,7 +78,14 @@ class ProductControllerMix extends Controller
         // $data = $request->all();
 
         //Pegando dados específicos:
-        $data = $request->only('name','description','price','photo');
+        $data = $request->only('name','description','price','image');
+
+        if($request->hasFile('image') && $request->image->isValid()){
+            //dd($request->image->store('products'));
+            $imagePath = $request->image->store('products');
+
+            $data['image'] = $imagePath;
+        };
 
         //Cria/persiste os dados e retorna um objeto que pode ou não ser usado!
         // $product = Product::create($data);
@@ -91,7 +99,7 @@ class ProductControllerMix extends Controller
         // $request->validate([
         //     'name' => 'required|min:3|max:255',
         //     'description' => 'required|min:3|max:10000',
-        //     'photo' => 'image|nullable',
+        //     'image' => 'image|nullable',
         // ]);
         //Se existir erro, ele volta para a página de origem com as mensagens de erro
 
@@ -104,20 +112,20 @@ class ProductControllerMix extends Controller
         // dd($request->except('_token')); //Exibe todos os campos, exceto o informado.
 
         //Manipulação de arquivos:
-        // dd($request->file('photo')); //Exibe todos os dados do arquivo
-        // dd($request->file('photo')->isValid()); //Verifica se é um arquivo válido (true ou false)
+        // dd($request->file('image')); //Exibe todos os dados do arquivo
+        // dd($request->file('image')->isValid()); //Verifica se é um arquivo válido (true ou false)
 
-        // if($request->file('photo')->isValid()){
-        //     // dd($request->photo->extension()); // == $request->file('photo'); Exibe a extensão do file!
-        //     // dd($request->photo->getClientOriginalName()); //Exibe p nome original do arquivo
+        // if($request->file('image')->isValid()){
+        //     // dd($request->image->extension()); // == $request->file('image'); Exibe a extensão do file!
+        //     // dd($request->image->getClientOriginalName()); //Exibe p nome original do arquivo
 
         //     // Armazena arquivo no diretório informado. Se el não existir, ele será criado
         //     // Para armazenar os arquivos no diretório raíz (storage) use o parametro '' (vazio).
-        //     // dd($request->file('photo')->store('products'));
+        //     // dd($request->file('image')->store('products'));
 
         //     //Armazena o arquivo com nome personalizado
-        //     $nameFile = $request->name . '.' . $request->photo->extension();
-        //     dd($request->file('photo')->storeAs('products', $nameFile));
+        //     $nameFile = $request->name . '.' . $request->image->extension();
+        //     dd($request->file('image')->storeAs('products', $nameFile));
 
         // }
 
@@ -173,7 +181,20 @@ class ProductControllerMix extends Controller
         if(!$product = $this->repository->find($id))
             return redirect()->back();
 
-        $product->update($request->all());
+        $data = $request->all();
+
+        if($request->hasFile('image') && $request->image->isValid()){
+
+            if($product->image){
+                dd(Storage::exists($product->image));
+            }
+
+            $imagePath = $request->image->store('products');
+            $data['image'] = $imagePath;
+        };
+
+        // $product->update($request->all());
+        $product->update($data);
 
         return redirect()->route('products.index');
 

@@ -30,7 +30,7 @@ class StorageUpdateProductsRequest extends FormRequest
             'name' => "required|min:3|max:255|unique:products,name,{$id},id",
             'description' => 'required|min:3|max:10000',
             'price' => 'required',
-            'photo' => 'image|nullable',
+            'image' => 'image|nullable',
         ];
     }
 

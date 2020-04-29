@@ -14,7 +14,7 @@
         <!-- Ou pode-se usar apenas a diretiva abaixo: -->
         @include('admin.pages._partial.form')
         <div class="form-group">
-            <input class="form-control" type="file" name="photo" >
+            <input class="form-control" type="file" name="image" >
         </div>
         <button class="btn btn-success" type="submit">Enviar</button>
     </form>

@@ -8,7 +8,7 @@
 @section('content')
     <h1>Editar produto {{ $product->name }}</h1>
 
-    <form action="{{ route('products.update', $product->id) }}" method="post">
+    <form action="{{ route('products.update', $product->id) }}" method="post" enctype="multipart/form-data">
         <!-- Form so trabalha com POST ou GET, por isto deve-se usar: -->
         <!-- <input type="hidden" name="_method" value="PUT"> -->
         <!-- Ou conforme abaixo: -->
